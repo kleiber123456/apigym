@@ -10,6 +10,9 @@ const upload = multer({ storage: storage });
 
 // Crear Producto/Servicio (con imagen)
 router.post('/ProductoServicio', upload.single('imagen'), (req, res) => {
+    console.log("Datos recibidos:", req.body);
+    console.log("Archivo recibido:", req.file);
+
     const { Nombre, Descripcion, Precio, Tipo } = req.body;
 
     // Crea una nueva instancia con la imagen como buffer
@@ -24,7 +27,10 @@ router.post('/ProductoServicio', upload.single('imagen'), (req, res) => {
     newProductoServicio
         .save()
         .then((data) => res.json(data))
-        .catch((error) => res.status(500).json({ message: error }));
+        .catch((error) => {
+            console.error("Error al guardar el producto:", error);
+            res.status(500).json({ message: error.message });
+        });
 });
 
 // Obtener todos los Productos/Servicios
@@ -32,7 +38,7 @@ router.get("/ProductoServicio", (req, res) =>{
     productoServicioSchema
     .find()
     .then((data) => res.json(data))
-    .catch((error) => res.status(500).json({ message: error }));
+    .catch((error) => res.status(500).json({ message: error.message }));
 });
 
 // Obtener un Producto/Servicio por ID
@@ -41,7 +47,7 @@ router.get("/ProductoServicio/:id", (req, res) =>{
     productoServicioSchema
     .findById(id)
     .then((data) => res.json(data))
-    .catch((error) => res.status(500).json({ message: error }));
+    .catch((error) => res.status(500).json({ message: error.message }));
 });
 
 // Actualizar un Producto/Servicio por ID (con imagen)
@@ -72,7 +78,7 @@ router.put("/ProductoServicio/:id", upload.single('imagen'), async (req, res) =>
 
         res.json(updatedProductoServicio);
     } catch (error) {
-        console.error(error);
+        console.error("Error al actualizar el producto:", error);
         res.status(500).json({ message: 'Error al actualizar el producto o servicio' });
     }
 });
@@ -83,7 +89,7 @@ router.delete("/ProductoServicio/:id", async (req, res) => {
     productoServicioSchema
         .deleteOne({ _id: id })
         .then((data) => res.json(data))
-        .catch((error) => res.status(500).json({ message: error }));
+        .catch((error) => res.status(500).json({ message: error.message }));
 });
 
-module.exports = router;
+module.exports = router;
