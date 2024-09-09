@@ -9,6 +9,7 @@ const clientesRouter = require("./routes/clientes");
 const productoservicioRoutes =require("./routes/productoServicio");
 const ventasRoutes = require("./routes/ventas");
 const comprasRouter = require("./routes/compras");
+const loginRouter = require("./routes/login");
 
 
 // settings
@@ -24,6 +25,7 @@ app.use("/api", clientesRouter )
 app.use("/api", comprasRouter )
 app.use("/api", productoservicioRoutes)
 app.use("/api", ventasRoutes)
+app.use("/api", loginRouter)
 
 // routes
 app.get("/", (req, res) => {

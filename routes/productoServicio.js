@@ -39,6 +39,7 @@ router.put("/ProductoServicio/:id", async (req, res) => {
       const {
         Nombre,
         Descripcion,
+        Imagen,
         Precio,
         Tipo
       }= req.body;
@@ -47,6 +48,7 @@ router.put("/ProductoServicio/:id", async (req, res) => {
       const updatedData = {
         Nombre,
         Descripcion,
+        Imagen,
         Precio,
         Tipo
       };

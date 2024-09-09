@@ -14,6 +14,12 @@ const productoServicioSchema = mongoose.Schema({
     type: String,
     required:true
   },
+
+  Imagen:{
+    type: Image,
+    required:true
+  },
+  
   Precio:{
     type: Number,
     required: true,
