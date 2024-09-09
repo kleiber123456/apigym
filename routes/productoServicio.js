@@ -15,6 +15,11 @@ router.post('/ProductoServicio', upload.single('imagen'), (req, res) => {
 
     const { Nombre, Descripcion, Precio, Tipo } = req.body;
 
+    // Verificar que todos los campos requeridos están presentes
+    if (!Nombre || !Descripcion || !Precio || !Tipo) {
+        return res.status(400).json({ message: 'Faltan datos requeridos' });
+    }
+
     // Crea una nueva instancia con la imagen como buffer
     const newProductoServicio = new productoServicioSchema({
         Nombre,
@@ -29,7 +34,7 @@ router.post('/ProductoServicio', upload.single('imagen'), (req, res) => {
         .then((data) => res.json(data))
         .catch((error) => {
             console.error("Error al guardar el producto:", error);
-            res.status(500).json({ message: error.message });
+            res.status(500).json({ message: 'Error interno del servidor', error: error.message });
         });
 });
 
@@ -38,7 +43,10 @@ router.get("/ProductoServicio", (req, res) =>{
     productoServicioSchema
     .find()
     .then((data) => res.json(data))
-    .catch((error) => res.status(500).json({ message: error.message }));
+    .catch((error) => {
+        console.error("Error al obtener los productos:", error);
+        res.status(500).json({ message: 'Error interno del servidor', error: error.message });
+    });
 });
 
 // Obtener un Producto/Servicio por ID
@@ -46,8 +54,16 @@ router.get("/ProductoServicio/:id", (req, res) =>{
     const { id } = req.params;
     productoServicioSchema
     .findById(id)
-    .then((data) => res.json(data))
-    .catch((error) => res.status(500).json({ message: error.message }));
+    .then((data) => {
+        if (!data) {
+            return res.status(404).json({ message: 'Producto/Servicio no encontrado' });
+        }
+        res.json(data);
+    })
+    .catch((error) => {
+        console.error("Error al obtener el producto:", error);
+        res.status(500).json({ message: 'Error interno del servidor', error: error.message });
+    });
 });
 
 // Actualizar un Producto/Servicio por ID (con imagen)
@@ -56,6 +72,11 @@ router.put("/ProductoServicio/:id", upload.single('imagen'), async (req, res) =>
         const { id } = req.params;
         const { Nombre, Descripcion, Precio, Tipo } = req.body;
         
+        // Verificar que todos los campos requeridos están presentes
+        if (!Nombre || !Descripcion || !Precio || !Tipo) {
+            return res.status(400).json({ message: 'Faltan datos requeridos' });
+        }
+
         // Crea un objeto con los datos actualizados
         const updatedData = {
             Nombre,
@@ -79,17 +100,25 @@ router.put("/ProductoServicio/:id", upload.single('imagen'), async (req, res) =>
         res.json(updatedProductoServicio);
     } catch (error) {
         console.error("Error al actualizar el producto:", error);
-        res.status(500).json({ message: 'Error al actualizar el producto o servicio' });
+        res.status(500).json({ message: 'Error interno del servidor', error: error.message });
     }
 });
 
 // Eliminar un Producto/Servicio
 router.delete("/ProductoServicio/:id", async (req, res) => {
     const { id } = req.params;
-    productoServicioSchema
-        .deleteOne({ _id: id })
-        .then((data) => res.json(data))
-        .catch((error) => res.status(500).json({ message: error.message }));
+    try {
+        const result = await productoServicioSchema.deleteOne({ _id: id });
+
+        if (result.deletedCount === 0) {
+            return res.status(404).json({ message: 'Producto/Servicio no encontrado' });
+        }
+
+        res.json(result);
+    } catch (error) {
+        console.error("Error al eliminar el producto:", error);
+        res.status(500).json({ message: 'Error interno del servidor', error: error.message });
+    }
 });
 
 module.exports = router;
