@@ -16,7 +16,7 @@ const productoServicioSchema = mongoose.Schema({
   },
 
   Imagen:{
-    type: Image,
+    type: Buffer,
     required:true
   },
   
