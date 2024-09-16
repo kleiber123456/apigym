@@ -14,11 +14,6 @@ const productoServicioSchema = mongoose.Schema({
     type: String,
     required:true
   },
-
-  Imagen:{
-    type: Buffer,
-    required:true
-  },
   
   Precio:{
     type: Number,

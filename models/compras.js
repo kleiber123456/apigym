@@ -12,19 +12,19 @@ const comprasSchema = mongoose.Schema({
     ref: 'Proveedores', 
     required: true 
   },
-  fecha: { 
+  Fecha: { 
     type: Date, 
     default: Date.now 
   },
-  stock:{
+  Stock:{
     type:Number,
     required:true
   },
-  total: { 
+  Total: { 
     type: Number, 
     required: true 
   },
-  estado: { 
+  Estado: { 
     type: String, 
     enum: ['Pendiente', 'Completado', 'Cancelado'], 
     default: 'Pendiente' 
