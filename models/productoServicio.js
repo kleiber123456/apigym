@@ -14,7 +14,6 @@ const productoServicioSchema = mongoose.Schema({
     type: String,
     required:true
   },
-  
   Precio:{
     type: Number,
     required: true,
