@@ -1,124 +1,78 @@
 const express = require("express");
-const multer = require('multer');
 const productoServicioSchema = require("../models/productoServicio");
 
 const router = express.Router();
 
-// Configurar multer para almacenar imágenes en memoria
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
-
-// Crear Producto/Servicio (con imagen)
-router.post('/ProductoServicio', upload.single('imagen'), (req, res) => {
-    console.log("Datos recibidos:", req.body);
-    console.log("Archivo recibido:", req.file);
-
-    const { Nombre, Descripcion, Precio, Tipo } = req.body;
-
-    // Verificar que todos los campos requeridos están presentes
-    if (!Nombre || !Descripcion || !Precio || !Tipo) {
-        return res.status(400).json({ message: 'Faltan datos requeridos' });
-    }
-
-    // Crea una nueva instancia con la imagen como buffer
-    const newProductoServicio = new productoServicioSchema({
-        Nombre,
-        Descripcion,
-        Imagen: req.file ? req.file.buffer : null,  // Almacena la imagen como binario
-        Precio,
-        Tipo
-    });
-
-    newProductoServicio
+// create user 
+router.post('/ProductoServicio' , (req, res) => {
+    const ProductoServicio = productoServicioSchema(req.body);
+    ProductoServicio
         .save()
         .then((data) => res.json(data))
-        .catch((error) => {
-            console.error("Error al guardar el producto:", error);
-            res.status(500).json({ message: 'Error interno del servidor', error: error.message });
-        });
+        .catch((error) => res.json({mesaage: error}))
 });
 
-// Obtener todos los Productos/Servicios
+// get all users
 router.get("/ProductoServicio", (req, res) =>{
     productoServicioSchema
     .find()
     .then((data) => res.json(data))
-    .catch((error) => {
-        console.error("Error al obtener los productos:", error);
-        res.status(500).json({ message: 'Error interno del servidor', error: error.message });
-    });
+    .catch((error) => res.json({ mesaage: error}));
 });
 
-// Obtener un Producto/Servicio por ID
+//get a users
+
 router.get("/ProductoServicio/:id", (req, res) =>{
-    const { id } = req.params;
+    const {id} = req.params;
     productoServicioSchema
     .findById(id)
-    .then((data) => {
-        if (!data) {
-            return res.status(404).json({ message: 'Producto/Servicio no encontrado' });
-        }
-        res.json(data);
-    })
-    .catch((error) => {
-        console.error("Error al obtener el producto:", error);
-        res.status(500).json({ message: 'Error interno del servidor', error: error.message });
-    });
+    .then((data) => res.json(data))
+    .catch((error) => res.json({ mesaage: error}));
 });
 
-// Actualizar un Producto/Servicio por ID (con imagen)
-router.put("/ProductoServicio/:id", upload.single('imagen'), async (req, res) => {
+//update a users
+
+router.put("/ProductoServicio/:id", async (req, res) => {
     try {
-        const { id } = req.params;
-        const { Nombre, Descripcion, Precio, Tipo } = req.body;
-        
-        // Verificar que todos los campos requeridos están presentes
-        if (!Nombre || !Descripcion || !Precio || !Tipo) {
-            return res.status(400).json({ message: 'Faltan datos requeridos' });
-        }
+      const { id } = req.params;
 
-        // Crea un objeto con los datos actualizados
-        const updatedData = {
-            Nombre,
-            Descripcion,
-            Precio,
-            Tipo
-        };
+      const {
+        Nombre,
+        Descripcion,
+        Precio,
+        Tipo
+      }= req.body;
 
-        // Si se ha subido una nueva imagen, también la actualizamos
-        if (req.file) {
-            updatedData.Imagen = req.file.buffer;  // Actualiza la imagen
-        }
+      // Crea un objeto con los datos actualizados
+      const updatedData = {
+        Nombre,
+        Descripcion,
+        Precio,
+        Tipo
+      };
 
-        // Actualiza el producto/servicio en la base de datos
-        const updatedProductoServicio = await productoServicioSchema.updateOne({ _id: id }, { $set: updatedData });
+      // Actualiza el usuario en la base de datos
+      const updatedProductoServicio = await productoServicioSchema.updateOne({ _id: id }, { $set: updatedData });
 
-        if (updatedProductoServicio.matchedCount === 0) {
-            return res.status(404).json({ message: 'El producto o servicio no fue encontrado' });
-        }
+      if (updatedProductoServicio.matchedCount === 0) {
+        return res.status(404).json({ message: 'El producto o servicios no fue encontrado' });
+      }
 
-        res.json(updatedProductoServicio);
+      res.json(updatedProductoServicio);
     } catch (error) {
-        console.error("Error al actualizar el producto:", error);
-        res.status(500).json({ message: 'Error interno del servidor', error: error.message });
+      console.error(error);
+      res.status(500).json({ message: 'Error al actualizar el producto o servicio' });
     }
-});
-
-// Eliminar un Producto/Servicio
+  });
+// delete a user
 router.delete("/ProductoServicio/:id", async (req, res) => {
     const { id } = req.params;
-    try {
-        const result = await productoServicioSchema.deleteOne({ _id: id });
+    productoServicioSchema
+        .deleteOne({ _id: id })
+        .then((data) => res.json(data))
+        .catch((error) => res.json({message: error}));
+  });
 
-        if (result.deletedCount === 0) {
-            return res.status(404).json({ message: 'Producto/Servicio no encontrado' });
-        }
 
-        res.json(result);
-    } catch (error) {
-        console.error("Error al eliminar el producto:", error);
-        res.status(500).json({ message: 'Error interno del servidor', error: error.message });
-    }
-});
 
-module.exports = router;
+module.exports = router;
