@@ -7,7 +7,7 @@ const comprasSchema = mongoose.Schema({
     unique: true 
   },
   Proveedores_id: { 
-    type: mongoose.Schema.Types.ObjectId, 
+    type: String, // Cambiado a String
     ref: 'Proveedores', 
     required: true 
   },
@@ -29,10 +29,11 @@ const comprasSchema = mongoose.Schema({
     default: 'Pendiente' 
   },
   ProductoServicio_id: { 
-    type: mongoose.Schema.Types.ObjectId, 
+    type: String, // Cambiado a String
     ref: 'ProductoServicio', 
     required: true
   },
 });
 
 module.exports = mongoose.model('Compras', comprasSchema);
+
