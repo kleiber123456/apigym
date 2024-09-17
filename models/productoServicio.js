@@ -26,4 +26,6 @@ const productoServicioSchema = mongoose.Schema({
   }
 })
 
-module.exports = mongoose.model('ProductoServicio', productoServicioSchema);
+productoServicio = mongoose.model("ProductoServicio",productoServicioSchema);
+
+module.exports = productoServicio
