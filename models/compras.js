@@ -29,7 +29,7 @@ const comprasSchema = mongoose.Schema({
     enum: ['Pendiente', 'Completado', 'Cancelado'], 
     default: 'Pendiente' 
   },
-  Productoservicio_id: { 
+  ProductoServicio_id: { 
     type: mongoose.Schema.Types.String, 
     ref: 'Productos', 
     required: true 
