@@ -2,23 +2,23 @@ const mongoose = require("mongoose");
 
 // Define el esquema para "Compras"
 const comprasSchema = mongoose.Schema({
-  _id:{ 
+  _id: { 
     type: String,
-    required:true,
+    required: true,
     unique: true 
   },
   Proveedores_id: { 
     type: mongoose.Schema.Types.String, 
-    ref: 'Proveedores', 
+    ref: 'Proveedores', // Asegúrate que 'Proveedores' es el nombre del modelo de proveedores
     required: true 
   },
   Fecha: { 
     type: Date, 
     default: Date.now 
   },
-  Stock:{
-    type:Number,
-    required:true
+  Stock: {
+    type: Number,
+    required: true
   },
   Total: { 
     type: Number, 
@@ -31,7 +31,8 @@ const comprasSchema = mongoose.Schema({
   },
   ProductoServicio_id: { 
     type: mongoose.Schema.Types.String, 
-    ref: 'Productos', 
+    ref: 'ProductoServicio', // Cambiado a 'ProductoServicio', que es el nombre del modelo
+    required: true
   },
 });
 
