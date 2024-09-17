@@ -16,8 +16,8 @@ router.post('/compras', (req, res) => {
 router.get("/compras", (req, res) => {
     comprasSchema
         .find()
-        .populate('Proveedores_id Nombre') 
-        .populate('Productoservicio_id Nombre') 
+        .populate('Proveedores_id') // Esto pobla el modelo "Proveedores"
+        .populate('ProductoServicio_id') // Esto pobla el modelo "ProductoServicio"
         .then((data) => res.json(data))
         .catch((error) => res.status(500).json({ message: error.message }));
 });
@@ -27,8 +27,8 @@ router.get("/compras/:id", (req, res) => {
     const { id } = req.params;
     comprasSchema
         .findById(id)
-        .populate('Proveedores_id')
-        .populate('Productoservicio_id')
+        .populate('Proveedores_id') // Poblar proveedores
+        .populate('ProductoServicio_id') // Poblar productos o servicios
         .then((data) => {
             if (!data) {
                 return res.status(404).json({ message: 'Compra no encontrada' });
@@ -42,14 +42,14 @@ router.get("/compras/:id", (req, res) => {
 router.put("/compras/:id", async (req, res) => {
     try {
         const { id } = req.params;
-        const { Proveedores_id, FechaCompra, Total, Productoservicio_id } = req.body;
+        const { Proveedores_id, FechaCompra, Total, ProductoServicio_id } = req.body;
 
         // Crea un objeto con los datos actualizados
         const updatedData = {
             Proveedores_id,
             FechaCompra,
             Total,
-            Productoservicio_id
+            ProductoServicio_id
         };
 
         // Actualiza la compra en la base de datos
@@ -81,3 +81,4 @@ router.delete("/compras/:id", (req, res) => {
 });
 
 module.exports = router;
+
