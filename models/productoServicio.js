@@ -1,31 +1,30 @@
-const mongoose = require("mongoose");
-
+const mongoose = require("mongoose")
 const productoServicioSchema = mongoose.Schema({
-  _id: { 
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
+  _id:{ 
+    type: String,
+    required:true,
     unique: true 
   },
-  Nombre: { 
+  Nombre:{ 
     type: String,
-    required: true
+    required:true
   },
-  Descripcion: {
+  Descripcion:{
     type: String,
-    required: true
+    required:true
   },
-  Precio: {
+  Precio:{
     type: Number,
-    required: true
+    required: true,
   },
-  Tipo: {
+  Tipo:{
     type: String,
     required: true,
     enum: ['Producto', 'Servicio'], 
     message: 'El tipo debe ser "Producto" o "Servicio".'
   }
-});
+})
 
-const ProductoServicio = mongoose.model("ProductoServicio", productoServicioSchema);
+productoServicio = mongoose.model("ProductoServicio",productoServicioSchema);
 
-module.exports = ProductoServicio;
+module.exports = productoServicio
