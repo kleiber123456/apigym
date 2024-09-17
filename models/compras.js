@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-// Define el esquema para "Compras"
 const comprasSchema = mongoose.Schema({
   _id: { 
     type: String,
@@ -9,7 +8,7 @@ const comprasSchema = mongoose.Schema({
   },
   Proveedores_id: { 
     type: mongoose.Schema.Types.ObjectId, 
-    ref: 'Proveedores', // Asegúrate que 'Proveedores' es el nombre del modelo de proveedores
+    ref: 'Proveedores', 
     required: true 
   },
   Fecha: { 
@@ -31,10 +30,9 @@ const comprasSchema = mongoose.Schema({
   },
   ProductoServicio_id: { 
     type: mongoose.Schema.Types.ObjectId, 
-    ref: 'ProductoServicio', // Asegúrate que 'ProductoServicio' es el nombre del modelo
+    ref: 'ProductoServicio', 
     required: true
   },
 });
 
 module.exports = mongoose.model('Compras', comprasSchema);
-
