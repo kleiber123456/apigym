@@ -16,7 +16,7 @@ router.post('/compras', (req, res) => {
 router.get("/compras", (req, res) => {
     comprasSchema
         .find()
-        .populate('ProveedoresID') 
+        .populate('Proveedores_id') 
         .populate('ProductoServicioID') 
         .then((data) => res.json(data))
         .catch((error) => res.status(500).json({ message: error.message }));
@@ -27,7 +27,7 @@ router.get("/compras/:id", (req, res) => {
     const { id } = req.params;
     comprasSchema
         .findById(id)
-        .populate('ProveedoresID')
+        .populate('Proveedores_id')
         .populate('ProductoServicioID')
         .then((data) => {
             if (!data) {
@@ -42,11 +42,11 @@ router.get("/compras/:id", (req, res) => {
 router.put("/compras/:id", async (req, res) => {
     try {
         const { id } = req.params;
-        const { ProveedoresID, FechaCompra, Total, ProductoServicioID } = req.body;
+        const { Proveedores_id, FechaCompra, Total, ProductoServicioID } = req.body;
 
         // Crea un objeto con los datos actualizados
         const updatedData = {
-            ProveedoresID,
+            Proveedores_id,
             FechaCompra,
             Total,
             ProductoServicioID
