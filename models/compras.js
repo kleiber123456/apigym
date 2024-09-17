@@ -1,13 +1,8 @@
 const mongoose = require("mongoose");
 
 const comprasSchema = mongoose.Schema({
-  _id: { 
-    type: String,
-    required: true,
-    unique: true 
-  },
   Proveedores_id: { 
-    type: String, // Cambiado a String
+    type: String, // String en lugar de ObjectId
     ref: 'Proveedores', 
     required: true 
   },
@@ -29,11 +24,12 @@ const comprasSchema = mongoose.Schema({
     default: 'Pendiente' 
   },
   ProductoServicio_id: { 
-    type: String, // Cambiado a String
+    type: String, // String en lugar de ObjectId
     ref: 'ProductoServicio', 
     required: true
   },
 });
 
 module.exports = mongoose.model('Compras', comprasSchema);
+
 
