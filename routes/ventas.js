@@ -16,8 +16,8 @@ router.post('/ventas', (req, res) => {
 router.get("/ventas", (req, res) => {
     ventasSchema
         .find()
-        .populate('Clientes_id') // Popula la referencia al cliente
-        .populate('ProductoServicio_id') // Popula la referencia al producto o servicio
+        .populate('Clientes_id') // Asegúrate de que el nombre del campo sea correcto
+        .populate('ProductoServicio_id') // Asegúrate de que el nombre del campo sea correcto
         .then((data) => res.json(data))
         .catch((error) => res.status(500).json({ message: error.message }));
 });
