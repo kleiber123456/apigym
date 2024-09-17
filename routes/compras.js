@@ -13,7 +13,9 @@ function isValidObjectId(id) {
 router.post('/compras', (req, res) => {
     const { Proveedores_id, ProductoServicio_id, Stock, Total, Estado } = req.body;
 
-    // Verificar que los IDs son válidos
+    console.log('Proveedores_id:', Proveedores_id);
+    console.log('ProductoServicio_id:', ProductoServicio_id);
+
     if (!isValidObjectId(Proveedores_id)) {
         return res.status(400).json({ message: 'Proveedores_id inválido' });
     }
@@ -27,7 +29,7 @@ router.post('/compras', (req, res) => {
 
     const compra = new comprasSchema({
         Proveedores_id,
-        Fecha: Date.now(),  // Asignar la fecha actual si no se proporciona
+        Fecha: Date.now(),
         Stock,
         Total,
         Estado,
@@ -39,6 +41,7 @@ router.post('/compras', (req, res) => {
         .then((data) => res.json(data))
         .catch((error) => res.status(400).json({ message: error.message }));
 });
+
 
 // Obtener todas las compras
 router.get("/compras", (req, res) => {
