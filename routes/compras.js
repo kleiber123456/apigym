@@ -16,8 +16,8 @@ router.post('/compras', (req, res) => {
 router.get("/compras", (req, res) => {
     comprasSchema
         .find()
-        .populate('Proveedores_id') 
-        .populate('Productoservicio_id') 
+        .populate('Proveedores_id Nombre') 
+        .populate('Productoservicio_id Nombre') 
         .then((data) => res.json(data))
         .catch((error) => res.status(500).json({ message: error.message }));
 });
