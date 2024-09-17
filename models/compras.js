@@ -32,7 +32,6 @@ const comprasSchema = mongoose.Schema({
   ProductoServicio_id: { 
     type: mongoose.Schema.Types.String, 
     ref: 'Productos', 
-    required: true 
   },
 });
 
