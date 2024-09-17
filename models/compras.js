@@ -8,7 +8,7 @@ const comprasSchema = mongoose.Schema({
     unique: true 
   },
   Proveedores_id: { 
-    type: mongoose.Schema.Types.String, 
+    type: mongoose.Schema.Types.ObjectId, 
     ref: 'Proveedores', // Asegúrate que 'Proveedores' es el nombre del modelo de proveedores
     required: true 
   },
@@ -30,10 +30,11 @@ const comprasSchema = mongoose.Schema({
     default: 'Pendiente' 
   },
   ProductoServicio_id: { 
-    type: mongoose.Schema.Types.String, 
-    ref: 'ProductoServicio', // Cambiado a 'ProductoServicio', que es el nombre del modelo
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'ProductoServicio', // Asegúrate que 'ProductoServicio' es el nombre del modelo
     required: true
   },
 });
 
 module.exports = mongoose.model('Compras', comprasSchema);
+
