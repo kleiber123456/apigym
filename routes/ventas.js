@@ -16,8 +16,8 @@ router.post('/ventas', (req, res) => {
 router.get("/ventas", (req, res) => {
     ventasSchema
         .find()
-        .populate('ClienteID') // Popula la referencia al cliente
-        .populate('ProductoServicioID') // Popula la referencia al producto o servicio
+        .populate('Clientes_id') // Popula la referencia al cliente
+        .populate('ProductoServicio_id') // Popula la referencia al producto o servicio
         .then((data) => res.json(data))
         .catch((error) => res.status(500).json({ message: error.message }));
 });
@@ -27,8 +27,8 @@ router.get("/ventas/:id", (req, res) => {
     const { id } = req.params;
     ventasSchema
         .findById(id)
-        .populate('ClienteID')
-        .populate('ProductoServicioID')
+        .populate('Clientes_id')
+        .populate('ProductoServicio_id')
         .then((data) => {
             if (!data) {
                 return res.status(404).json({ message: 'Venta no encontrada' });
@@ -42,14 +42,14 @@ router.get("/ventas/:id", (req, res) => {
 router.put("/ventas/:id", async (req, res) => {
     try {
         const { id } = req.params;
-        const { ClienteID, FechaVenta, Total, ProductoServicioID } = req.body;
+        const { Clientes_id, FechaVenta, Total, ProductoServicio_id } = req.body;
 
         // Crea un objeto con los datos actualizados
         const updatedData = {
-            ClienteID,
+            Clientes_id,
             FechaVenta,
             Total,
-            ProductoServicioID
+            ProductoServicio_id
         };
 
         // Actualiza la venta en la base de datos
