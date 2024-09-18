@@ -1,5 +1,5 @@
 const express = require("express");
-const comprasSchema = require("../models/compras"); // Asegúrate de que la ruta sea correcta
+const comprasSchema = require("../models/compras"); // Importa el modelo de compras
 
 const router = express.Router();
 
@@ -95,3 +95,4 @@ router.delete("/compras/:id", (req, res) => {
 });
 
 module.exports = router;
+
