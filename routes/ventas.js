@@ -1,23 +1,53 @@
 const express = require("express");
-const ventasSchema = require("../models/ventas"); // Asegúrate de que la ruta sea correcta
+const ventasSchema = require("../models/ventas"); // Importa el modelo de ventas
+const comprasSchema = require("../models/compras"); // Importa el modelo de compras para ajustar el stock
 
 const router = express.Router();
 
-// Crear una venta
-router.post('/ventas', (req, res) => {
-    const venta = new ventasSchema(req.body);
-    venta
-        .save()
-        .then((data) => res.json(data))
-        .catch((error) => res.status(400).json({ message: error.message }));
+// Crear una venta y ajustar el stock
+router.post('/ventas', async (req, res) => {
+    const { Clientes_id, FechaVenta, Total, ProductoServicio_id } = req.body;
+
+    try {
+        // Buscar la compra relacionada al ProductoServicio_id
+        const compra = await comprasSchema.findOne({ ProductoServicio_id });
+
+        if (!compra) {
+            return res.status(404).json({ message: "Compra no encontrada para el producto vendido" });
+        }
+
+        // Verificar que haya suficiente stock
+        if (compra.Stock < Total) {
+            return res.status(400).json({ message: "Stock insuficiente para realizar la venta" });
+        }
+
+        // Crear la venta
+        const venta = new ventasSchema({
+            Clientes_id,
+            FechaVenta,
+            Total,
+            ProductoServicio_id
+        });
+
+        const savedVenta = await venta.save();
+
+        // Restar el Total de la venta al Stock en la compra
+        compra.Stock -= Total;
+        await compra.save();
+
+        res.json({ venta: savedVenta, message: "Venta realizada y stock actualizado correctamente" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    }
 });
 
 // Obtener todas las ventas
 router.get("/ventas", (req, res) => {
     ventasSchema
         .find()
-        .populate('Clientes_id') // Asegúrate de que el nombre del campo sea correcto
-        .populate('ProductoServicio_id') // Asegúrate de que el nombre del campo sea correcto
+        .populate('Clientes_id') // Popula la referencia al cliente
+        .populate('ProductoServicio_id') // Popula la referencia al producto o servicio
         .then((data) => res.json(data))
         .catch((error) => res.status(500).json({ message: error.message }));
 });
@@ -81,3 +111,5 @@ router.delete("/ventas/:id", (req, res) => {
 });
 
 module.exports = router;
+
+
