@@ -1,12 +1,4 @@
-const mongoose = require("mongoose");
-
-// Define el esquema para "Ventas"
 const ventasSchema = mongoose.Schema({
-    _id: { 
-        type: String,
-        required: true,
-        unique: true 
-    },
     Clientes_id: {
         type: mongoose.Schema.Types.String,
         ref: 'Clientes',
@@ -22,7 +14,7 @@ const ventasSchema = mongoose.Schema({
     },
     ProductoServicio_id: {
         type: mongoose.Schema.Types.String,
-        ref: 'ProductoServicio', // Asegúrate de usar el nombre correcto del modelo
+        ref: 'ProductoServicio',
         required: true
     }
 });
