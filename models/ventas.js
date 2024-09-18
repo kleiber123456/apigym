@@ -1,3 +1,5 @@
+const mongoose = require("mongoose");
+
 const ventasSchema = mongoose.Schema({
     Clientes_id: {
         type: mongoose.Schema.Types.String,
