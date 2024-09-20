@@ -14,7 +14,16 @@ const productoServicioSchema = mongoose.Schema({
         type: String,
         required: true
     },
+
+    Stock:{
+       type: Number,
+       required: true
+    },
     Precio: {
+        type: Number,
+        required: true
+    },
+    Subtotal:{
         type: Number,
         required: true
     },
