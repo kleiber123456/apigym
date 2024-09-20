@@ -40,6 +40,8 @@ router.put("/ProductoServicio/:id", async (req, res) => {
         Nombre,
         Descripcion,
         Precio,
+        Stock,
+        Subtotal,
         Tipo
       }= req.body;
 
@@ -48,6 +50,8 @@ router.put("/ProductoServicio/:id", async (req, res) => {
         Nombre,
         Descripcion,
         Precio,
+        Stock,
+        Subtotal,
         Tipo
       };
 
