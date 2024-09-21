@@ -18,6 +18,11 @@ const ventasSchema = mongoose.Schema({
         type: mongoose.Schema.Types.String,
         ref: 'ProductoServicio',
         required: true
+    },
+    Estado: {
+        type: String,
+        enum: ['Completada', 'Cancelada'], // Define los estados posibles
+        default: 'Completada' // Por defecto, la venta estará "completada"
     }
 });
 
