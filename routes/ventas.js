@@ -96,6 +96,45 @@ router.put("/ventas/:id", async (req, res) => {
     }
 });
 
+// Cancelar una venta y ajustar el stock
+router.put('/ventas/:id/cancelar', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        // Buscar la venta por su ID
+        const venta = await ventasSchema.findById(id);
+
+        if (!venta) {
+            return res.status(404).json({ message: 'Venta no encontrada' });
+        }
+
+        // Verificar si la venta ya está cancelada
+        if (venta.estado === 'cancelada') {
+            return res.status(400).json({ message: 'La venta ya está cancelada' });
+        }
+
+        // Buscar la compra relacionada para ajustar el stock
+        const compra = await comprasSchema.findOne({ ProductoServicio_id: venta.ProductoServicio_id });
+
+        if (!compra) {
+            return res.status(404).json({ message: "Compra no encontrada para el producto vendido" });
+        }
+
+        // Devolver el total de la venta al stock de la compra
+        compra.Stock += venta.Total;
+        await compra.save();
+
+        // Cambiar el estado de la venta a 'cancelada'
+        venta.estado = 'cancelada';
+        await venta.save();
+
+        res.json({ venta, message: 'Venta cancelada y stock ajustado correctamente' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    }
+});
+
 // Eliminar una venta
 router.delete("/ventas/:id", (req, res) => {
     const { id } = req.params;
@@ -111,5 +150,6 @@ router.delete("/ventas/:id", (req, res) => {
 });
 
 module.exports = router;
+
 
 
