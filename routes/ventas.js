@@ -26,7 +26,8 @@ router.post('/ventas', async (req, res) => {
             Clientes_id,
             FechaVenta,
             Total,
-            ProductoServicio_id
+            ProductoServicio_id,
+            Estado
         });
 
         const savedVenta = await venta.save();
@@ -72,14 +73,15 @@ router.get("/ventas/:id", (req, res) => {
 router.put("/ventas/:id", async (req, res) => {
     try {
         const { id } = req.params;
-        const { Clientes_id, FechaVenta, Total, ProductoServicio_id } = req.body;
+        const { Clientes_id, FechaVenta, Total, ProductoServicio_id, Estado } = req.body;
 
         // Crea un objeto con los datos actualizados
         const updatedData = {
             Clientes_id,
             FechaVenta,
             Total,
-            ProductoServicio_id
+            ProductoServicio_id,
+            Estado
         };
 
         // Actualiza la venta en la base de datos
