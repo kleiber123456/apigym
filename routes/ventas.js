@@ -6,7 +6,7 @@ const router = express.Router();
 
 // Crear una venta y ajustar el stock
 router.post('/ventas', async (req, res) => {
-    const { Clientes_id, FechaVenta, Total, ProductoServicio_id } = req.body;
+    const { Clientes_id, FechaVenta, Total, ProductoServicio_id, Estado } = req.body;
 
     try {
         // Buscar la compra relacionada al ProductoServicio_id
