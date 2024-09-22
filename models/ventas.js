@@ -21,9 +21,7 @@ const ventasSchema = mongoose.Schema({
     },
     Estado: {
         type: String,
-        enum: ['Completada', 'Cancelada'], // Define los estados posibles
-        default: 'Completada' // Por defecto, la venta estará "completada"
-    }
+        enum: ['Completada', 'Cancelada'],
 });
 
 module.exports = mongoose.model('Ventas', ventasSchema);
