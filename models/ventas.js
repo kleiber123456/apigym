@@ -21,7 +21,7 @@ const ventasSchema = mongoose.Schema({
     },
     Estado: {
         type: String,
-        enum: ['Completada', 'Cancelada'],
+        enum: ['completada', 'cancelada'],
 });
 
 module.exports = mongoose.model('Ventas', ventasSchema);
